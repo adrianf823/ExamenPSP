@@ -35,9 +35,6 @@ import org.apache.commons.net.ftp.FTPFile;
 
 public class ExamenPSP extends JFrame{
 
-	//Toda la parte visual
-	//para el login, es usuario, usuario pass y user.
-	//Pero vamos, que no va a funcionar fuera de mi local
 	static JTextField cab= new JTextField();
 	static JTextField cab2= new JTextField();
 	static JTextField cab3= new JTextField();
@@ -119,7 +116,6 @@ public class ExamenPSP extends JFrame{
 		botonLogin.setBounds(120, 300, 130, 30);
 		
 
-		//Metodo que lista las direcciones, rutas
 			listaDirec.addListSelectionListener(new ListSelectionListener() {
 				
 				@Override
@@ -194,7 +190,7 @@ public class ExamenPSP extends JFrame{
 				}
 			});
 			
-			//Boton para crear una carpeta
+
 			botonCreaDir.addActionListener(new ActionListener() {
 				
 				@Override
@@ -213,9 +209,7 @@ public class ExamenPSP extends JFrame{
                                                     String m=nombreCarpeta.trim()+" => Se ha creado correctamtente";
                                                     JOptionPane.showMessageDialog(null, m);
                                                     campo.setText(m);
-                                                    //cambiamos a ese directorio
                                                     cliente.changeWorkingDirectory(direcSelec);
-                                                    //listamos los ficheros
                                                     FTPFile[] ff2= cliente.listFiles();
                                                     llenarLista(ff2,direcSelec);
                                                 } else {
@@ -229,7 +223,6 @@ public class ExamenPSP extends JFrame{
 				}
 			});
 			
-			//Boton para entrar a la aplicacion
 			botonLogin.addActionListener(new ActionListener() {
 				
 				@Override
@@ -248,7 +241,6 @@ public class ExamenPSP extends JFrame{
 				}
 			});
 			
-			//Boton para eliminar una carpeta
 			botonDelDir.addActionListener(new ActionListener() {
 				
 				@Override
@@ -280,8 +272,7 @@ public class ExamenPSP extends JFrame{
 					}
 				}
 			});
-			
-			//boton para subir contenido a la carpeta actual
+                        
 			botonCargar.addActionListener(new ActionListener() {
 				
 				@Override
@@ -306,7 +297,6 @@ public class ExamenPSP extends JFrame{
 					}
 				}
 			});
-			//Boton para descargar un archivo
 			botonDescargar.addActionListener(new ActionListener() {
 				
 				@Override
@@ -339,7 +329,6 @@ public class ExamenPSP extends JFrame{
 				}
                         });
                         
-			//boton para borrar el archivo seleccionado
 			botonBorrar.addActionListener(new ActionListener() {
 				
 				@Override
@@ -357,8 +346,6 @@ public class ExamenPSP extends JFrame{
 			});
 		
 	}
-	
-	//Proceso de logeo
 	private void Login(String server,String user, String pass, JFrame panelLogin) throws IOException {
 			cliente.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 		cliente.connect(server);
@@ -419,7 +406,6 @@ public class ExamenPSP extends JFrame{
 		}
 	}
 	
-	//Mostrar los elementos del directorio actual
 	private static void llenarLista(FTPFile[] files,String direc2) throws IOException {
 		if(files==null) return;
 		
@@ -455,7 +441,6 @@ public class ExamenPSP extends JFrame{
 		}
 	}
 	
-	//Borrar el fichero en si
 	private void BorrarFichero(String nombreCompleto, String nombreFichero) throws IOException {
 		int seleccion=JOptionPane.showConfirmDialog(null, "Desea eliminar el fichero seleccionado?");
 		if(seleccion==JOptionPane.OK_OPTION) {
@@ -472,14 +457,12 @@ public class ExamenPSP extends JFrame{
 		}
 	}
 	
-	//Metodo para subir un fichero
 	private boolean SubirFichero(String archivo, String soloNombre) throws IOException {
 		cliente.setFileType(FTP.BINARY_FILE_TYPE);
 		BufferedInputStream in=new BufferedInputStream(new FileInputStream(archivo));
 		boolean ok=false;
 		
 		cliente.changeWorkingDirectory(direcSelec);
-		//Metodo de subirlo en si
 		if(cliente.storeFile(soloNombre, in)) {
 			String s=" "+soloNombre+" => Subido correctamente";
 			campo.setText(s);
@@ -494,7 +477,6 @@ public class ExamenPSP extends JFrame{
 		return ok;
 	}
 	
-	//Para descargar
 	private void DescargarFichero(String nombreCompleto, String nombreFichero) {
 		String archivoyCarpetaDestino="";
 		String carpetaDestino="";
@@ -511,7 +493,7 @@ public class ExamenPSP extends JFrame{
 			try {
 				cliente.setFileType(FTP.BINARY_FILE_TYPE);
 				BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(archivoyCarpetaDestino));
-				//El momento de descargarlo
+				
 				if(cliente.retrieveFile(nombreCompleto, out))
 					JOptionPane.showMessageDialog(null, nombreFichero+" se ha descargado con exito");
 				else
